@@ -2,4 +2,8 @@
 # @version 1.0.0
 # @author foncused
 
+# Day cycle in ticks
+day: 36000
 
+# Night cycle in ticks
+night: 6000
