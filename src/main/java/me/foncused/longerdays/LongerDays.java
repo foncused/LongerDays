@@ -22,13 +22,13 @@ public class LongerDays extends JavaPlugin {
 	private void registerRunnables() {
 		final FileConfiguration config = this.getConfig();
 		long day = config.getLong("day", 36000);
-		if(day < 0) {
+		if(day <= 0) {
 			this.consoleWarning("Set day cycle to " + day + " ticks is not safe, reverting to default...");
 			day = 36000;
 		}
 		this.console("Set day cycle to " + day + " ticks");
 		long night = config.getLong("night", 6000);
-		if(night < 0) {
+		if(night <= 0) {
 			this.consoleWarning("Set night cycle to " + night + " ticks is not safe, reverting to default...");
 			night = 6000;
 		}

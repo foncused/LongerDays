@@ -51,6 +51,7 @@ public class Runnable {
 		// Speedup
 		if(ratio > 1.0) {
 			world.setTime(time + Math.round(ratio) - 1);
+			this.count = 0;
 		// Slowdown
 		} else if(ratio < 1.0) {
 			if(this.count == 0) {
@@ -61,6 +62,7 @@ public class Runnable {
 				this.count--;
 			}
 		}
+		this.plugin.console("World time: " + world.getTime());
 	}
 
 }
