@@ -62,7 +62,6 @@ public class Runnable {
 				this.count--;
 			}
 		}
-		this.plugin.console("World time: " + world.getTime());
 	}
 
 }
