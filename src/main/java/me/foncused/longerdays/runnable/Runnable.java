@@ -26,9 +26,9 @@ public class Runnable {
 				final World world = Bukkit.getWorlds().get(0);
 				final long time = world.getTime();
 				if(isDay(world)) {
-					setTime(world, day);
+					setTime(world, convertMinsToTicks(day));
 				} else if(isNight(world)) {
-					setTime(world, night);
+					setTime(world, convertMinsToTicks(night));
 				} else {
 					plugin.consoleWarning("World time " + time + " is impossible");
 				}
@@ -62,6 +62,10 @@ public class Runnable {
 				this.count--;
 			}
 		}
+	}
+
+	private long convertMinsToTicks(final long min) {
+		return min * 60 * 20;
 	}
 
 }
