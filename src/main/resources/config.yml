@@ -1,5 +1,5 @@
 # @plugin LongerDays
-# @version 1.0.3
+# @version 1.0.4
 # @author foncused
 
 # Day cycle in minutes
@@ -7,3 +7,7 @@ day: 30
 
 # Night cycle in minutes
 night: 5
+
+# Worlds to enable
+worlds:
+  - "world"

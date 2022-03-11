@@ -1,5 +1,7 @@
 package me.foncused.longerdays;
 
+import me.foncused.longerdays.config.ConfigManager;
+import me.foncused.longerdays.event.WorldLoad;
 import me.foncused.longerdays.runnable.Runnable;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -7,41 +9,36 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class LongerDays extends JavaPlugin {
 
-	private final String PREFIX = "[LongerDays] ";
+	private ConfigManager cm;
 
 	@Override
 	public void onEnable() {
 		this.registerConfig();
+		this.registerEvents();
 		this.registerRunnables();
 	}
 
 	private void registerConfig() {
 		this.saveDefaultConfig();
+		final FileConfiguration config = this.getConfig();
+		this.cm = new ConfigManager(
+				config.getInt("day", 30),
+				config.getInt("night", 5),
+				config.getStringList("worlds")
+		);
+	}
+
+	private void registerEvents() {
+		Bukkit.getPluginManager().registerEvents(new WorldLoad(this), this);
 	}
 
 	private void registerRunnables() {
-		final FileConfiguration config = this.getConfig();
-		long day = config.getLong("day", 30);
-		if(day <= 0) {
-			this.consoleWarning("Set day cycle to " + day + " minutes is not safe, reverting to default...");
-			day = 30;
-		}
-		this.console("Set day cycle to " + day + " minutes");
-		long night = config.getLong("night", 5);
-		if(night <= 0) {
-			this.consoleWarning("Set night cycle to " + night + " minutes is not safe, reverting to default...");
-			night = 5;
-		}
-		this.console("Set night cycle to " + night + " minutes");
-		new Runnable(this, day, night).runCycles();
+		final Runnable runnable = new Runnable(this);
+		this.cm.getWorlds().forEach(world -> runnable.runCycles(Bukkit.getWorld(world)));
 	}
 
-	public void console(final String message) {
-		Bukkit.getLogger().info(this.PREFIX + message);
-	}
-
-	public void consoleWarning(final String message) {
-		Bukkit.getLogger().warning(this.PREFIX + message);
+	public ConfigManager getConfigManager() {
+		return this.cm;
 	}
 
 }
