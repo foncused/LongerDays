@@ -31,6 +31,7 @@ public class Runnable {
 				}
 			}
 		}.runTaskTimer(this.plugin, 0, 1);
+		LongerDaysUtil.console("Running day and night cycles for world '" + world.getName() + "'");
 	}
 
 	private boolean isDay(final World world) {

@@ -1,11 +1,13 @@
 package me.foncused.longerdays;
 
 import me.foncused.longerdays.config.ConfigManager;
-import me.foncused.longerdays.event.WorldLoad;
 import me.foncused.longerdays.runnable.Runnable;
+import me.foncused.longerdays.util.LongerDaysUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class LongerDays extends JavaPlugin {
 
@@ -14,8 +16,24 @@ public class LongerDays extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		this.registerConfig();
-		this.registerEvents();
-		this.registerRunnables();
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				registerGameRules();
+				registerRunnables();
+			}
+		}.runTask(this);
+	}
+
+	@Override
+	public void onDisable() {
+		Bukkit.getWorlds()
+				.stream()
+				.filter(world -> this.cm.getWorlds().contains(world.getName()))
+				.forEach(world -> {
+					world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
+					LongerDaysUtil.console("Setting GameRule.DO_DAYLIGHT_CYCLE to true for world '" + world.getName() + "'");
+				});
 	}
 
 	private void registerConfig() {
@@ -28,13 +46,22 @@ public class LongerDays extends JavaPlugin {
 		);
 	}
 
-	private void registerEvents() {
-		Bukkit.getPluginManager().registerEvents(new WorldLoad(this), this);
+	private void registerGameRules() {
+		Bukkit.getWorlds()
+				.stream()
+				.filter(world -> this.cm.getWorlds().contains(world.getName()))
+				.forEach(world -> {
+					world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+					LongerDaysUtil.console("Setting GameRule.DO_DAYLIGHT_CYCLE to false for world '" + world.getName() + "'");
+				});
 	}
 
 	private void registerRunnables() {
 		final Runnable runnable = new Runnable(this);
-		this.cm.getWorlds().forEach(world -> runnable.runCycles(Bukkit.getWorld(world)));
+		Bukkit.getWorlds()
+				.stream()
+				.filter(world -> this.cm.getWorlds().contains(world.getName()))
+				.forEach(runnable::runCycles);
 	}
 
 	public ConfigManager getConfigManager() {
