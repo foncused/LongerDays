@@ -9,8 +9,8 @@ import java.util.Set;
 
 public class ConfigManager {
 
-	private int day;
-	private int night;
+	private final int day;
+	private final int night;
 	private Set<String> worlds;
 
 	public ConfigManager(
@@ -41,16 +41,8 @@ public class ConfigManager {
 		return this.day;
 	}
 
-	public void setDay(final int day) {
-		this.day = day;
-	}
-
 	public int getNight() {
 		return this.night;
-	}
-
-	public void setNight(final int night) {
-		this.night = night;
 	}
 
 	public Set<String> getWorlds() {
