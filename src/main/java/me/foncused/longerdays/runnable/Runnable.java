@@ -22,9 +22,9 @@ public class Runnable {
 			@Override
 			public void run() {
 				final long time = world.getTime();
-				if(isDay(world)) {
+				if(LongerDaysUtil.isDay(world)) {
 					setTime(world, convertMinsToTicks(cm.getDay()));
-				} else if(isNight(world)) {
+				} else if(LongerDaysUtil.isNight(world)) {
 					setTime(world, convertMinsToTicks(cm.getNight()));
 				} else {
 					LongerDaysUtil.consoleWarning(world.getName() + " world time " + time + " is impossible");
@@ -32,15 +32,6 @@ public class Runnable {
 			}
 		}.runTaskTimer(this.plugin, 0, 1);
 		LongerDaysUtil.console("Running day and night cycles for world '" + world.getName() + "'");
-	}
-
-	private boolean isDay(final World world) {
-		final long time = world.getTime();
-		return time >= 0 && time < 12000;
-	}
-
-	private boolean isNight(final World world) {
-		return (!(this.isDay(world)));
 	}
 
 	private void setTime(final World world, final long val) {

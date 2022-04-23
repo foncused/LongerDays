@@ -1,6 +1,7 @@
 package me.foncused.longerdays;
 
 import me.foncused.longerdays.config.ConfigManager;
+import me.foncused.longerdays.event.player.PlayerBed;
 import me.foncused.longerdays.runnable.Runnable;
 import me.foncused.longerdays.util.LongerDaysUtil;
 import org.bukkit.Bukkit;
@@ -16,10 +17,11 @@ public class LongerDays extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		this.registerConfig();
+		this.registerEvents();
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				registerGameRules();
+				setDaylightCycle(false);
 				registerRunnables();
 			}
 		}.runTask(this);
@@ -27,13 +29,7 @@ public class LongerDays extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		Bukkit.getWorlds()
-				.stream()
-				.filter(world -> this.cm.getWorlds().contains(world.getName()))
-				.forEach(world -> {
-					world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, true);
-					LongerDaysUtil.console("Setting GameRule.DO_DAYLIGHT_CYCLE to true for world '" + world.getName() + "'");
-				});
+		this.setDaylightCycle(true);
 	}
 
 	private void registerConfig() {
@@ -46,14 +42,8 @@ public class LongerDays extends JavaPlugin {
 		);
 	}
 
-	private void registerGameRules() {
-		Bukkit.getWorlds()
-				.stream()
-				.filter(world -> this.cm.getWorlds().contains(world.getName()))
-				.forEach(world -> {
-					world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-					LongerDaysUtil.console("Setting GameRule.DO_DAYLIGHT_CYCLE to false for world '" + world.getName() + "'");
-				});
+	private void registerEvents() {
+		Bukkit.getPluginManager().registerEvents(new PlayerBed(), this);
 	}
 
 	private void registerRunnables() {
@@ -62,6 +52,16 @@ public class LongerDays extends JavaPlugin {
 				.stream()
 				.filter(world -> this.cm.getWorlds().contains(world.getName()))
 				.forEach(runnable::runCycles);
+	}
+
+	private void setDaylightCycle(final boolean value) {
+		Bukkit.getWorlds()
+				.stream()
+				.filter(world -> this.cm.getWorlds().contains(world.getName()))
+				.forEach(world -> {
+					world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, value);
+					LongerDaysUtil.console("Setting GameRule.DO_DAYLIGHT_CYCLE to " + value + " for world '" + world.getName() + "'");
+				});
 	}
 
 	public ConfigManager getConfigManager() {
