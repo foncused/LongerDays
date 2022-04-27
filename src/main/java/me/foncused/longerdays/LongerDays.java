@@ -6,11 +6,12 @@ import me.foncused.longerdays.runnable.Runnable;
 import me.foncused.longerdays.util.LongerDaysUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class LongerDays extends JavaPlugin {
+
+	public static final String PREFIX = "[LongerDays] ";
 
 	private ConfigManager cm;
 
@@ -34,12 +35,8 @@ public class LongerDays extends JavaPlugin {
 
 	private void registerConfig() {
 		this.saveDefaultConfig();
-		final FileConfiguration config = this.getConfig();
-		this.cm = new ConfigManager(
-				config.getInt("day", 30),
-				config.getInt("night", 5),
-				config.getStringList("worlds")
-		);
+		this.cm = new ConfigManager(this.getConfig());
+		this.cm.validate();
 	}
 
 	private void registerEvents() {

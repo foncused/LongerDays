@@ -1,18 +1,17 @@
 package me.foncused.longerdays.util;
 
+import me.foncused.longerdays.LongerDays;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
 public class LongerDaysUtil {
 
-	private static final String PREFIX = "[LongerDays] ";
-
 	public static void console(final String message) {
-		Bukkit.getLogger().info(PREFIX + message);
+		Bukkit.getLogger().info(LongerDays.PREFIX + message);
 	}
 
 	public static void consoleWarning(final String message) {
-		Bukkit.getLogger().warning(PREFIX + message);
+		Bukkit.getLogger().warning(LongerDays.PREFIX + message);
 	}
 
 	public static boolean isDay(final World world) {
