@@ -17,7 +17,9 @@ public class PlayerBed implements Listener {
 		this.sleeping++;
 		final World world = event.getPlayer().getWorld();
 		final int percentage = world.getGameRuleValue(GameRule.PLAYERS_SLEEPING_PERCENTAGE);
-		if(LongerDaysUtil.isNight(world) && (this.sleeping / world.getPlayers().size()) * 100 >= percentage) {
+		if(LongerDaysUtil.isNight(world)
+				&& event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK
+				&& (this.sleeping / world.getPlayers().size()) * 100 >= percentage) {
 			this.sleeping = 0;
 			world.setTime(0);
 			event.setCancelled(true);
