@@ -40,7 +40,7 @@ public class LongerDays extends JavaPlugin {
 	}
 
 	private void registerEvents() {
-		this.getServer().getPluginManager().registerEvents(new PlayerBed(), this);
+		this.getServer().getPluginManager().registerEvents(new PlayerBed(getConfigManager()), this);
 	}
 
 	private void registerRunnables() {
