@@ -15,6 +15,11 @@ public class ConfigManager {
 	private int night;
 	private Set<String> worlds;
 
+	private boolean nightSkippingEnabled;
+	private boolean percentageEnabled;
+	private int percentage;
+
+
 	public ConfigManager(final FileConfiguration config) {
 		this.config = config;
 	}
@@ -47,6 +52,9 @@ public class ConfigManager {
 		this.worlds.addAll(worlds);
 		this.worlds = Collections.unmodifiableSet(this.worlds);
 
+		percentageEnabled =  this.config.getBoolean("players-sleeping-percentage.enabled");
+		percentage = this.config.getInt("players-sleeping-percentage.percentage");
+		nightSkippingEnabled = this.config.getBoolean("night-skipping.enabled");
 	}
 
 	public int getDay() {
@@ -61,4 +69,15 @@ public class ConfigManager {
 		return Collections.unmodifiableSet(this.worlds);
 	}
 
+	public boolean isPercentageEnabled() {
+		return percentageEnabled;
+	}
+
+	public int getPercentage() {
+		return percentage;
+	}
+
+	public boolean isNightSkippingEnabled() {
+		return nightSkippingEnabled;
+	}
 }

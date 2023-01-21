@@ -11,3 +11,13 @@ night: 5
 # Worlds to enable
 worlds:
   - "world"
+
+# when this option is enabled, you can skip the night
+night-skipping:
+  enabled: false
+
+# If your server doesn't have the 'playersSleepingPercentage' game-rule, you can still control the percentage
+players-sleeping-percentage:
+  enabled: false
+  percentage: 50
+
