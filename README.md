@@ -11,6 +11,8 @@
 ### Configuration:
 - day - integer (minutes) for day cycle
 - night - integer (minutes) for night cycle
+- night-skipping - boolean to enable or disable night skipping
+- players-sleeping-percentage - integer percentage of players that must be sleeping for night skipping
 - worlds - string list of world names in which to enable this plugin
 
 https://github.com/foncused/LongerDays/blob/master/src/main/resources/config.yml

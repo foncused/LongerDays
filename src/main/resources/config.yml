@@ -1,5 +1,5 @@
 # @plugin LongerDays
-# @version 1.0.9
+# @version 1.0.10
 # @author foncused
 
 # Day cycle in minutes
@@ -7,6 +7,12 @@ day: 30
 
 # Night cycle in minutes
 night: 5
+
+# Night skipping
+night-skipping: true
+
+# Percentage of players that must be sleeping for night skipping
+players-sleeping-percentage: 50
 
 # Worlds to enable
 worlds:
