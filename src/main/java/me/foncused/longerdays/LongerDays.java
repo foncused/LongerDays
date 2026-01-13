@@ -9,6 +9,8 @@ import org.bukkit.GameRule;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Map;
+
 public class LongerDays extends JavaPlugin {
 
 	public static final String PREFIX = "[LongerDays] ";
@@ -22,8 +24,7 @@ public class LongerDays extends JavaPlugin {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				setDaylightCycle(false);
-				setPlayersSleepingPercentage(cm.getPlayersSleepingPercentage());
+                setGameRules(Map.of(GameRule.ADVANCE_TIME, false));
 				registerRunnables();
 			}
 		}.runTask(this);
@@ -31,7 +32,7 @@ public class LongerDays extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		this.setDaylightCycle(true);
+        this.setGameRules(Map.of(GameRule.ADVANCE_TIME, true));
 	}
 
 	private void registerConfig() {
@@ -41,7 +42,9 @@ public class LongerDays extends JavaPlugin {
 	}
 
 	private void registerEvents() {
-		this.getServer().getPluginManager().registerEvents(new PlayerBed(this), this);
+        if(this.cm.isNightSkipping()) {
+            this.getServer().getPluginManager().registerEvents(new PlayerBed(this), this);
+        }
 	}
 
 	private void registerRunnables() {
@@ -52,27 +55,15 @@ public class LongerDays extends JavaPlugin {
 				.forEach(runnable::runCycles);
 	}
 
-	private void setDaylightCycle(final boolean value) {
+	private <V> void setGameRules(Map<GameRule, V> gameRules) {
 		Bukkit.getWorlds()
 				.stream()
 				.filter(world -> this.cm.getWorlds().contains(world.getName()))
 				.forEach(world -> {
-					world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, value);
-					LongerDaysUtil.console("Setting GameRule.DO_DAYLIGHT_CYCLE to " + value + " for world '" + world.getName() + "'");
-				});
-	}
-
-	private void setPlayersSleepingPercentage(final int percentage) {
-		Bukkit.getWorlds()
-				.stream()
-				.filter(world -> this.cm.getWorlds().contains(world.getName()))
-				.forEach(world -> {
-					try {
-						world.setGameRule(GameRule.PLAYERS_SLEEPING_PERCENTAGE, percentage);
-						LongerDaysUtil.console("Setting GameRule.PLAYERS_SLEEPING_PERCENTAGE to " + percentage + "% for world '" + world.getName() + "'");
-					} catch(final Exception e) {
-						LongerDaysUtil.consoleWarning("Failed to set GameRule.PLAYERS_SLEEPING_PERCENTAGE to " + percentage + "% for world '" + world.getName() + "'");
-					}
+                    gameRules.forEach((k, v) -> {
+                        world.setGameRule(k, v);
+                        LongerDaysUtil.console("Setting GameRule." + k.getName().toUpperCase() + " to '" + v + "' for world '" + world.getName() + "'");
+                    });
 				});
 	}
 

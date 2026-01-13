@@ -8,11 +8,8 @@ day: 30
 # Night cycle in minutes
 night: 5
 
-# Night skipping
+# Skip nights by meeting GameRule.PLAYERS_SLEEPING_PERCENTAGE
 night-skipping: true
-
-# Percentage of players that must be sleeping for night skipping
-players-sleeping-percentage: 50
 
 # Worlds to enable
 worlds:

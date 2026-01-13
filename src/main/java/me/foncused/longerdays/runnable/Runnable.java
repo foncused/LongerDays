@@ -3,6 +3,7 @@ package me.foncused.longerdays.runnable;
 import me.foncused.longerdays.LongerDays;
 import me.foncused.longerdays.config.ConfigManager;
 import me.foncused.longerdays.util.LongerDaysUtil;
+import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -25,6 +26,9 @@ public class Runnable {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+                if(world.getGameRuleValue(GameRule.ADVANCE_TIME)) {
+                    world.setGameRule(GameRule.ADVANCE_TIME, false);
+                }
 				final long time = world.getTime();
 				if(LongerDaysUtil.isDay(world)) {
 					setTime(world, convertMinsToTicks(cm.getDay()));
