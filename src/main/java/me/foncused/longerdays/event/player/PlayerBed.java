@@ -2,7 +2,6 @@ package me.foncused.longerdays.event.player;
 
 import me.foncused.longerdays.LongerDays;
 import me.foncused.longerdays.config.ConfigManager;
-import me.foncused.longerdays.runnable.Runnable;
 import me.foncused.longerdays.util.LongerDaysUtil;
 import org.bukkit.GameRule;
 import org.bukkit.World;
@@ -17,7 +16,6 @@ public class PlayerBed implements Listener {
 
     private LongerDays plugin;
     private ConfigManager cm;
-    private Runnable runnable;
     private int sleeping;
 
     public PlayerBed(final LongerDays plugin) {
