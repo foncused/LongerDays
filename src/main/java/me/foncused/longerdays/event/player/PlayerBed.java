@@ -46,8 +46,10 @@ public class PlayerBed implements Listener {
                 public void run() {
                     if(LongerDaysUtil.isNight(world)
                             && event.getBedEnterResult() == PlayerBedEnterEvent.BedEnterResult.OK
-                            && player.isOnline() && player.isSleeping()
-                            && (sleeping / world.getPlayers().size()) * 100 >= percentage) {
+                            && player.isOnline()
+                            && player.isSleeping()
+                            && (!(world.getPlayers().isEmpty()))
+                            && (sleeping * 100.0 / world.getPlayers().size()) >= percentage) {
                         world.setTime(0);
                         sleeping = 0;
                         LongerDaysUtil.consoleWarning("The night has been skipped due to sleeping");
